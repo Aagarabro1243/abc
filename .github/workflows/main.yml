@@ -162,3 +162,33 @@ jobs:
       # Example step to show workflow is running
       - name: Workflow complete
         run: echo "Node.js CI workflow finished successfully!"```"
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # Clone the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests (optional, if you have test scripts)
+      - name: Run tests
+        run: npm test || echo "No tests defined"
+
+      # Start application in background (won't block the workflow)
+      - name: Start application
+        run: nohup npm start &
+
+      # Example step to show workflow is running
+      - name: Workflow complete
+        run: echo "Node.js CI workflow finished successfully!"```"
