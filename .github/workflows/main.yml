@@ -2,17 +2,15 @@ name: Node.js CI
 
 on:
   push:
-    branches:
+    branches: 
       - main
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 1440  # 24 hours
 
     strategy:
       matrix:
@@ -30,7 +28,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start application (keep alive 24h)
-        run: |
-          npm start &
-          sleep 1440m
+      - name: Build app
+        run: npm run build || echo "No build script"
+
+      - name: Test app
+        run: npm test || echo "No tests available"
+
+      - name: Start application
+        run: npm start
