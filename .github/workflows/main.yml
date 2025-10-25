@@ -5,12 +5,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 720  # 12 hours max
 
     strategy:
       matrix:
@@ -28,13 +26,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install PM2 globally
-        run: npm install -g pm2
-
-      - name: Start application with PM2
-        run: |
-          pm2 start start.js --name bot --no-autorestart
-          pm2 save
-          pm2 list
-          # Bot එක background එකේ run වෙලා job එක දිගටම තියෙන්න
-          tail -f /dev/null
+      - name: Run tests
+        run: npm test
