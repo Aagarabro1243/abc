@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start Bot
+      - name: Start Bot (Prevent Crash Stop)
+        continue-on-error: true
         run: |
-          npm start
-          # Bot run වෙලා job එක closing නැවැත්වෙන්න
+          npm start || echo "Bot crashed but workflow continues"
           tail -f /dev/null
