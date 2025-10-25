@@ -2,15 +2,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: 
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 720  # 12 hours max
 
     strategy:
       matrix:
@@ -28,11 +28,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build app
-        run: npm run build || echo "No build script"
+      - name: Install PM2 globally
+        run: npm install -g pm2
 
-      - name: Test app
-        run: npm test || echo "No tests available"
-
-      - name: Start application
-        run: npm start
+      - name: Start application with PM2
+        run: |
+          pm2 start start.js --name bot --no-autorestart
+          pm2 save
+          pm2 list
+          # Bot එක background එකේ run වෙලා job එක දිගටම තියෙන්න
+          tail -f /dev/null
